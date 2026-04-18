@@ -1,0 +1,6 @@
+flask==3.0.0
+flask-cors==4.0.0
+ultralytics==8.0.226
+opencv-python==4.8.1.78
+numpy==1.24.3
+depthai==2.24.1pyvirtualcam==0.4.1

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street Sign Detection with OpenCV and YOLOv8</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="icon.webp">
+
+
+</head>
+<body>
+    <div class="container">
+        <div class="control-bar">
+            <div class="title">🛑 Street Sign Detection using OpenCV and YOLOv8</div>
+
+
+            <div class="control-group">
+                <label for="confidenceSlider">Confidence Threshold:</label>
+                <div class="slider-container">
+                    <input 
+                        type="range" 
+                        id="confidenceSlider" 
+                        min="0" 
+                        max="1" 
+                        step="0.05" 
+                        value="0.5"
+                        title="Adjust the minimum confidence score for detections"
+                    >
+                    <span class="threshold-value" id="thresholdValue">0.50</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="darkModeToggle">Dark Mode:</label>
+                <button 
+                    id="darkModeToggle" 
+                    class="toggle-switch"
+                    title="Toggle dark/light mode"
+                    aria-label="Toggle dark mode"
+                ></button>
+            </div>
+
+            <div class="control-group">
+                <div class="fps-counter" id="fpsCounter" title="Frames per second">
+                    <span id="fpsValue">0</span> FPS
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="virtualCameraStartBtn">Virtual Camera:</label>
+                <button 
+                    id="virtualCameraStartBtn" 
+                    class="btn-virtual-camera start"
+                    title="Start virtual camera - OAK-D feed appears as webcam"
+                    aria-label="Start virtual camera"
+                >📷 Start Camera</button>
+                <button 
+                    id="virtualCameraStopBtn" 
+                    class="btn-virtual-camera stop"
+                    disabled
+                    title="Stop virtual camera"
+                    aria-label="Stop virtual camera"
+                >🔴 Stop Camera</button>
+                <span id="virtualCameraStatus" class="status-inactive">🔴 Inactive</span>
+            </div>
+
+            <div class="control-group">
+                <label for="photoUploadBtn">Upload Photo:</label>
+                <label id="photoUploadBtn" class="btn-upload" title="Upload a JPEG photo for detection">
+                    📷 Upload JPEG
+                    <input type="file" id="photoFileInput" accept="image/jpeg,image/jpg,image/png" style="display: none;">
+                </label>
+                <button id="clearPhotoBtn" class="btn-upload clear" style="display: none;" title="Return to camera feed">
+                    ✕ Back to Camera
+                </button>
+                <span id="photoModeLabel" class="photo-mode-label" style="display: none;">📸 Photo Mode</span>
+            </div>
+
+            <div class="control-group" style="margin-left: auto;">
+                <div class="status-indicator">
+                    <div class="status-dot" id="statusDot"></div>
+                    <span id="statusText">Initializing...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content" id="content">
+            <div class="video-container">
+                <!-- Browser webcam video element (used when no OAK-D) -->
+                <video id="webcamVideo" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: contain; display: none;"></video>
+                <!-- OAK-D MJPEG stream / uploaded photo display -->
+                <img id="videoStream" src="" style="width: 100%; height: 100%; object-fit: contain; display: none;" alt="Camera Feed">
+                <!-- Canvas overlay for detection boxes -->
+                <canvas id="canvas"></canvas>
+                <div id="errorMessage" class="error-message"></div>
+            </div>
+            
+            <!-- Detection Log Console -->
+            <div class="detection-console">
+                <div class="console-header">
+                    📋 Detection Log
+                    <button id="clearConsoleBtn" class="clear-btn" title="Clear console log">Clear</button>
+                </div>
+                <div class="console-body" id="detectionLog">
+                    <div class="console-line welcome">🟢 System Ready • Waiting for detections...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
